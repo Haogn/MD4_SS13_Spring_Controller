@@ -31,6 +31,7 @@
                     <th>Product Id</th>
                     <th>Product Name</th>
                     <th>Price</th>
+                    <th>Image</th>
                     <th>Category</th>
                     <th>Action</th>
                 </tr>
@@ -41,6 +42,9 @@
                         <td>${item.productId}</td>
                         <td>${item.productName}</td>
                         <td>${item.price}</td>
+                        <td>
+                            <img alt="" src="<c:url value="uploads"/>/images/${item.image}" width="100px">
+                        </td>
                         <td>${item.category.categoryName}</td>
                         <td>
                             <a href="/edit-pro/${item.productId}" type="button" class="btn btn-outline-success">Sửa</a>

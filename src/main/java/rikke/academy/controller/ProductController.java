@@ -6,11 +6,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import rikke.academy.model.entity.Category;
 import rikke.academy.model.entity.Product;
 import rikke.academy.model.service.CategoryService;
 import rikke.academy.model.service.ProductService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -35,7 +40,19 @@ public class ProductController {
         return "product/add";
     }
     @RequestMapping("/create-product")
-    public String create(@ModelAttribute("product") Product product){
+    public String create(@ModelAttribute("product") Product product, @RequestParam("fileImage")MultipartFile file , HttpServletRequest request){
+        // B1 : Khai báo biến lưu trữ path
+        String path = request.getServletContext().getRealPath("uploads/images");
+        String fileName = file.getOriginalFilename();
+        // lưu trữ
+        File destination = new File(path+"/"+fileName);
+        try {
+            file.transferTo(destination);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        product.setImage(fileName);
+        System.out.println(fileName);
         productService.create(product);
         return "redirect:/product";
     }
@@ -45,17 +62,19 @@ public class ProductController {
         productService.delete(id);
         return "redirect:/product";
     }
-    @RequestMapping("/edit/{id}")
+    @RequestMapping("/edit-pro/{id}")
     public String edit(@PathVariable("id") Integer id , Model model) {
         List<Category> categoryList = categoryService.findAll();
         Product product = productService.findById(id);
+        System.out.println(product.getImage());
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("product",product);
         return "product/edit";
     }
 
-    @RequestMapping("/")
-    public String update(){
+    @RequestMapping("/update-product")
+    public String update(@ModelAttribute("product") Product product){
+        productService.update(product,product.getProductId());
         return "redirect:/product";
     }
 }

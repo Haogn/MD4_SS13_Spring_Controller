@@ -31,7 +31,7 @@ public class ProductDAO_Ipml implements ProductDAO{
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("price"));
-                // chua co hinh anh
+                product.setImage(rs.getString("image"));
                 Category category = categoryService.findById(rs.getInt("category_id"));
                 product.setCategory(category);
                 list.add(product);
@@ -57,7 +57,7 @@ public class ProductDAO_Ipml implements ProductDAO{
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
                 product.setPrice(rs.getDouble("price"));
-                // chua co hinh anh
+                product.setImage(rs.getString("image"));
                 Category category = categoryService.findById(rs.getInt("category_id"));
                 product.setCategory(category);
 
@@ -76,10 +76,12 @@ public class ProductDAO_Ipml implements ProductDAO{
         Connection connection = null;
         try {
             connection = ConnectionDB.openConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO product (product_name , price  , category_id  ) VALUES (?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO product (product_name , price, image , category_id  ) VALUES (?,?,?,?)");
             preparedStatement.setString(1,product.getProductName());
             preparedStatement.setDouble(2,product.getPrice());
-            preparedStatement.setInt(3,product.getCategory().getCategotyId());
+            preparedStatement.setString(3,product.getImage());
+            preparedStatement.setInt(4,product.getCategory().getCategotyId());
+
             int check = preparedStatement.executeUpdate();
             if ( check > 0 ) {
                 isCheck = true;
@@ -118,11 +120,12 @@ public class ProductDAO_Ipml implements ProductDAO{
         Connection connection = null;
         try {
             connection = ConnectionDB.openConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET product_name = ? , price = ? , category_id = ? where product_id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET product_name = ? , price = ? , image = ? category_id = ? where product_id = ?");
             preparedStatement.setString(1, product.getProductName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setInt(3,product.getCategory().getCategotyId());
-            preparedStatement.setInt(4,id);
+            preparedStatement.setString(3,product.getImage());
+            preparedStatement.setInt(4,product.getCategory().getCategotyId());
+            preparedStatement.setInt(5,id);
             int check = preparedStatement.executeUpdate();
             if ( check > 0 ) {
                 isCheck = true;

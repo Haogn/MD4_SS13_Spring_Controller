@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-lg-6">
             <h1 class="text-center">Create Product</h1>
-            <f:form action="/create-product" method="post" modelAttribute="product">
+            <f:form action="/create-product" method="post" modelAttribute="product" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="productName">productName</label>
                     <f:input type="text" class="form-control" id="productName" path="productName" placeholder="productName"/>
@@ -33,6 +33,10 @@
                 <div class="form-group">
                     <label for="price">price</label>
                     <f:input type="text" class="form-control" id="price" path="price" placeholder="price"/>
+                </div>
+                <div class="form-group">
+                    <label for="image">image</label>
+                    <input type="file" class="form-control" id="image" name="fileImage" />
                 </div>
                 <div class="form-group">
                     <label for="">Category</label>

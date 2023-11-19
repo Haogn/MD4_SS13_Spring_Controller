@@ -25,28 +25,32 @@
     <div class="row">
         <div class="col-lg-6">
             <h1 class="text-center">Edit Product</h1>
-            <f:form action="/=edit-product" method="post">
+            <f:form action="update-product" method="post" modelAttribute="product"  enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="productId">productId</label>
-                    <input type="text" class="form-control" id="productId" readonly  />
+                    <input type="text" class="form-control" id="productId" readonly value=${product.productId}>
                 </div>
                 <div class="form-group">
                     <label for="productName">productName</label>
-                    <f:input type="text" class="form-control" id="productName" path="productName" placeholder="productName"/>
+                    <f:input type="text" class="form-control" id="productName" path="productName" />
                 </div>
                 <div class="form-group">
                     <label for="price">price</label>
-                    <f:input type="text" class="form-control" id="price" path="price" placeholder="price"/>
+                    <f:input type="text" class="form-control" id="price" path="price" />
+                </div>
+                <div class="form-group">
+                    <label >image</label>
+                    <input type="file" class="form-control"  value=${product.image} >
                 </div>
                 <div class="form-group">
                     <label for="">Category</label>
                     <f:select path="category.categotyId" class="form-control" id="">
-                        <c:forEach items="${list}" var="item">
+                        <c:forEach items="${categoryList}" var="item">
                             <option value=${item.categotyId}>${item.categoryName}</option>
                         </c:forEach>
                     </f:select>
                 </div>
-                <button type="submit" class="btn btn-outline-dark">Add New</button>
+                <button type="submit" class="btn btn-outline-dark">Update</button>
             </f:form>
         </div>
     </div>
