@@ -60,7 +60,6 @@ public class ProductDAO_Ipml implements ProductDAO{
                 product.setImage(rs.getString("image"));
                 Category category = categoryService.findById(rs.getInt("category_id"));
                 product.setCategory(category);
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -120,10 +119,10 @@ public class ProductDAO_Ipml implements ProductDAO{
         Connection connection = null;
         try {
             connection = ConnectionDB.openConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET product_name = ? , price = ? , image = ? category_id = ? where product_id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET product_name = ? , price = ? , image = ? ,category_id = ? where product_id = ?");
             preparedStatement.setString(1, product.getProductName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setString(3,product.getImage());
+            preparedStatement.setString(3,product.getImage() != null ? product.getImage() : "");
             preparedStatement.setInt(4,product.getCategory().getCategotyId());
             preparedStatement.setInt(5,id);
             int check = preparedStatement.executeUpdate();

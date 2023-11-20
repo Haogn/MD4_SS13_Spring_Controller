@@ -25,29 +25,34 @@
     <div class="row">
         <div class="col-lg-6">
             <h1 class="text-center">Edit Product</h1>
-            <f:form action="update-product" method="post" modelAttribute="product"  enctype="multipart/form-data">
+            <f:form action="${pageContext.request.contextPath}/update-product/${product.productId}"
+                    method="post" modelAttribute="product"
+                    enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="productId">productId</label>
                     <input type="text" class="form-control" id="productId" readonly value=${product.productId}>
                 </div>
                 <div class="form-group">
                     <label for="productName">productName</label>
-                    <f:input type="text" class="form-control" id="productName" path="productName" />
+                    <f:input type="text" class="form-control" id="productName" path="productName"/>
                 </div>
                 <div class="form-group">
                     <label for="price">price</label>
-                    <f:input type="text" class="form-control" id="price" path="price" />
+                    <f:input type="text" class="form-control" id="price" path="price"/>
                 </div>
                 <div class="form-group">
-                    <label >image</label>
-                    <input type="file" class="form-control"  value=${product.image} >
+                    <label>image</label>
+                    <img src="<%= request.getContextPath()%>/uploads/images/${product.image}" alt="">
+                    <input type="file" class="form-control" id="image" name="img_upload"/>
                 </div>
+                <f:input path="image" type="hiden"/>
                 <div class="form-group">
                     <label for="">Category</label>
                     <f:select path="category.categotyId" class="form-control" id="">
                         <c:forEach items="${categoryList}" var="item">
                             <option value=${item.categotyId}>${item.categoryName}</option>
                         </c:forEach>
+<%--                        <f:options items="${categoryList}" itemLabel="categotyName" itemValue="categoryId"></f:options>--%>
                     </f:select>
                 </div>
                 <button type="submit" class="btn btn-outline-dark">Update</button>

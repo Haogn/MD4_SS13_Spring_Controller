@@ -40,7 +40,9 @@ public class ProductController {
         return "product/add";
     }
     @RequestMapping("/create-product")
-    public String create(@ModelAttribute("product") Product product, @RequestParam("fileImage")MultipartFile file , HttpServletRequest request){
+    public String create(@ModelAttribute("product") Product product,
+                         @RequestParam("fileImage")MultipartFile file ,
+                         HttpServletRequest request){
         // B1 : Khai báo biến lưu trữ path
         String path = request.getServletContext().getRealPath("uploads/images");
         String fileName = file.getOriginalFilename();
@@ -72,9 +74,32 @@ public class ProductController {
         return "product/edit";
     }
 
-    @RequestMapping("/update-product")
-    public String update(@ModelAttribute("product") Product product){
-        productService.update(product,product.getProductId());
+    @RequestMapping("/update-product/{id}")
+    public String update( @PathVariable("id") Integer id,
+                          @ModelAttribute("product") Product product,
+                         HttpServletRequest request,
+                         @RequestParam("img_upload") MultipartFile file){
+        // B1 : Khai báo biến lưu trữ path
+        String path = request.getServletContext().getRealPath("uploads/images");
+
+        // Nếu có file được chọn , thực hiện lưu trữ hình ảnh
+        if ( file != null && !file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            // Lưu trữ
+            File destination = new File(path+"/"+fileName);
+            try {
+                file.transferTo(destination);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            product.setImage(fileName);
+            System.out.println(fileName);
+        } else {
+            // người dùng không chọn hình ảnh mới , giữ nguyên giá trị cũ của image
+            Product existingProduct = productService.findById(id);
+            product.setImage(existingProduct.getImage());
+        }
+        productService.update(product,id);
         return "redirect:/product";
     }
 }
